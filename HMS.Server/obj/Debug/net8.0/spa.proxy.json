@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:50844",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\HMSProject v0\\HMS\\HMS.Server\\..\\hms.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
