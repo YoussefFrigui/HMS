@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "h7El6yoFNcf1nLiLI6R8bSomqXNxq5ndgFew9tfnNgo=",
+  "Source": "HMS.Server",
+  "BasePath": "_content/HMS.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "D:\\Workspace\\.net\\HMS\\hms.client\\hms.client.esproj",
+      "Version": 2,
+      "Source": "hms.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
