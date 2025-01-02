@@ -7,22 +7,41 @@ namespace Projet.BLL
 {
     public class AppointmentManager : IAppointmentManager
     {
-        private readonly IAppointmentRepository _repo;
-        public AppointmentManager(IAppointmentRepository repo) => _repo = repo;
+        private readonly IAppointmentRepository _repository;
 
-        public IEnumerable<Appointment> GetAll() => _repo.GetAll();
-        public Appointment GetById(int id) => _repo.GetById(id);
-        public Appointment Add(Appointment appointment)
+        public AppointmentManager(IAppointmentRepository repository)
         {
-            _repo.Add(appointment);
-            return appointment;
+            _repository = repository;
         }
-        public Appointment Update(Appointment appointment)
+
+        public IEnumerable<Appointment> GetAll()
         {
-            _repo.Update(appointment);
-            return appointment;
+            return _repository.GetAll();
         }
-        public void Delete(int id) => _repo.Delete(id);
-        public IEnumerable<Appointment> GetByDoctor(int doctorId) => _repo.GetByDoctorId(doctorId);
+
+        public Appointment GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
+        public void Add(Appointment appointment)
+        {
+            _repository.Add(appointment);
+        }
+
+        public void Update(Appointment appointment)
+        {
+            _repository.Update(appointment);
+        }
+
+        public void Delete(int id)
+        {
+            _repository.Delete(id);
+        }
+
+        public IEnumerable<Appointment> GetByDoctorId(int doctorId)
+        {
+            return _repository.GetByDoctorId(doctorId);
+        }
     }
 }

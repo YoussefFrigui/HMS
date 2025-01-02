@@ -7,9 +7,9 @@ namespace Projet.BLL.Contract
     {
         IEnumerable<Appointment> GetAll();
         Appointment GetById(int id);
-        Appointment Add(Appointment appointment);
-        Appointment Update(Appointment appointment);
+        void Add(Appointment appointment);
+        void Update(Appointment appointment);
         void Delete(int id);
-        IEnumerable<Appointment> GetByDoctor(int doctorId);
+        IEnumerable<Appointment> GetByDoctorId(int doctorId);
     }
 }

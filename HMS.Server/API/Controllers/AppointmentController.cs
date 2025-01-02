@@ -1,17 +1,21 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Projet.BLL.Contract;
+using Projet.Entities;
+
 namespace HMS.Server.API.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Projet.BLL.Contract;
-    using Projet.Entities;
-    using Microsoft.AspNetCore.Authorization;
-
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentManager _manager;
-        public AppointmentController(IAppointmentManager manager) => _manager = manager;
+
+        public AppointmentController(IAppointmentManager manager)
+        {
+            _manager = manager;
+        }
 
         [HttpGet]
         public IActionResult GetAll()
@@ -28,16 +32,28 @@ namespace HMS.Server.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Appointment appointment)
+        public IActionResult Create([FromBody] Appointment appointment)
         {
-            var created = _manager.Add(appointment);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var createdAppointment = _manager.Add(appointment);
+            return CreatedAtAction(nameof(GetById), new { id = createdAppointment.Id }, createdAppointment);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Appointment appointment)
+        public IActionResult Update(int id, [FromBody] Appointment appointment)
         {
-            if (id != appointment.Id) return BadRequest();
+            if (id != appointment.Id)
+                return BadRequest("Appointment ID mismatch.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var existingAppointment = _manager.GetById(id);
+            if (existingAppointment == null)
+                return NotFound();
+
             _manager.Update(appointment);
             return NoContent();
         }
@@ -45,15 +61,12 @@ namespace HMS.Server.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var appointment = _manager.GetById(id);
+            if (appointment == null)
+                return NotFound();
+
             _manager.Delete(id);
             return NoContent();
-        }
-
-        [HttpGet("doctor/{doctorId}")]
-        public IActionResult GetByDoctor(int doctorId)
-        {
-            var apps = _manager.GetByDoctor(doctorId);
-            return Ok(apps);
         }
     }
 }
