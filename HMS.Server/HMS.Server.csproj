@@ -13,6 +13,12 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -22,4 +28,17 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+  <Folder Include="API\" />
+  <Folder Include="Projet.BLL\" />
+  <Folder Include="Projet.BLL.Contract\" />
+  <Folder Include="Projet.Context\" />
+  <Folder Include="Projet.DAL\" />
+  <Folder Include="Projet.DAL.Contracts\" />
+  <Folder Include="Projet.Entities\" />
+  <Folder Include="Projet.Enums\" />
+  <Folder Include="Projet.Logs\" />
+  <Folder Include="Projet.Services\" />
+  <Folder Include="Projet.ViewModel\" />
+</ItemGroup>
 </Project>
