@@ -9,6 +9,9 @@ using Projet.DAL;
 using Projet.DAL.Contracts;
 using Projet.BLL;
 using Projet.BLL.Contract;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HMS.Server
 {
@@ -24,7 +27,7 @@ namespace HMS.Server
         {
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("HMS_DB")); 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); 
             // or UseSqlServer(...)
 
             // Repositories
@@ -40,6 +43,26 @@ namespace HMS.Server
             services.AddScoped<IAppointmentManager, AppointmentManager>();
             services.AddScoped<IMessageManager, MessageManager>();
             services.AddScoped<ILabReportManager, LabReportManager>();
+
+            // JWT Authentication Configuration
+            var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Secret"]);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             // Controllers
             services.AddControllers();

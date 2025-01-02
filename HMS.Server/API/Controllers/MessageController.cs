@@ -3,9 +3,11 @@ namespace HMS.Server.API.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Projet.BLL.Contract;
     using Projet.Entities;
+    using Microsoft.AspNetCore.Authorization;
 
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MessageController : ControllerBase
     {
         private readonly IMessageManager _manager;
