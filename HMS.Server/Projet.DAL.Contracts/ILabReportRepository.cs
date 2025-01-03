@@ -8,6 +8,7 @@ namespace Projet.DAL.Contracts
         IEnumerable<LabReport> GetAll();
         LabReport GetById(int id);
         void Add(LabReport report);
-        // Potentially define update/delete if needed
+        void Update(LabReport report);
+        
     }
 }

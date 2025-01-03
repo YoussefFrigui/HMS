@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Projet.Services;
 
 namespace HMS.Server
 {
@@ -7,6 +8,7 @@ namespace HMS.Server
     {
         public static void Main(string[] args)
 {
+    
     CreateHostBuilder(args).Build().Run();
 }
 

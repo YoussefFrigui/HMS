@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "h7El6yoFNcf1nLiLI6R8bSomqXNxq5ndgFew9tfnNgo=",
+  "Hash": "Eauf2/K1ml6NvNpZDGfBKj86Sa192HMlqYA5kASkSbA=",
   "Source": "HMS.Server",
   "BasePath": "_content/HMS.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "D:\\Workspace\\.net\\HMS\\hms.client\\hms.client.esproj",
+      "Identity": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.client\\hms.client.esproj",
       "Version": 2,
       "Source": "hms.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",

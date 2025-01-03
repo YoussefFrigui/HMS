@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Projet.BLL.Contract;
+
 using Projet.Entities;
 using Projet.ViewModel;
 using System;
@@ -9,7 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HMS.Server.API.Controllers
+namespace Projet.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -30,35 +31,35 @@ namespace HMS.Server.API.Controllers
             if (login == null || string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
                 return BadRequest("Invalid client request");
 
-            var user = _userManager.GetUserByEmail(login.Email);
-            if (user == null || user.Password != login.Password) // Implement password hashing in production
-                return Unauthorized();
+            var user = _userManager.Authenticate(login.Email, login.Password);
+            if (user == null)
+                return Unauthorized("Invalid credentials");
 
-            var tokenString = GenerateJwtToken(user);
+            var tokenString = GenerateJWTToken(user);
             return Ok(new { Token = tokenString });
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJWTToken(User user)
         {
-            var jwtSettings = _config.GetSection("Jwt");
-            var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var claims = new[]
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
-                Issuer = jwtSettings["Issuer"],
-                Audience = jwtSettings["Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_config["Jwt:ExpiryMinutes"])),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

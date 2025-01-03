@@ -1,1 +1,2 @@
 D:\Workspace\.net\HMS\hms.client\obj\Debug\hms.client.esproj.CoreCompileInputs.cache
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.client\obj\Debug\hms.client.esproj.CoreCompileInputs.cache

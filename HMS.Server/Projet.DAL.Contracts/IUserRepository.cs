@@ -5,11 +5,11 @@ namespace Projet.DAL.Contracts
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAll();
-        User GetById(int id);
         void Add(User user);
+        User GetById(int id);
+        User GetByEmail(string email);
         void Update(User user);
         void Delete(int id);
-        User GetByEmail(string email);
+        IEnumerable<User> GetAll();
     }
 }

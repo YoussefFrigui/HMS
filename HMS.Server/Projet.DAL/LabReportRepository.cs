@@ -20,5 +20,10 @@ namespace Projet.DAL
             _context.LabReports.Add(report);
             _context.SaveChanges();
         }
+
+        public void Update(LabReport report)
+        {
+            _context.LabReports.Update(report);
+            _context.SaveChanges();
     }
-}
+}}

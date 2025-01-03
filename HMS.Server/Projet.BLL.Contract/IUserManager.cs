@@ -5,6 +5,7 @@ namespace Projet.BLL.Contract
 {
     public interface IUserManager
     {
+        User Authenticate(string email, string password);
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
         User CreateUser(User user);

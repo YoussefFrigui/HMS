@@ -5,43 +5,27 @@ using System.Collections.Generic;
 
 namespace Projet.BLL
 {
-    public class AppointmentManager : IAppointmentManager
+   public class AppointmentManager : IAppointmentManager
+{
+    private readonly IAppointmentRepository _repository;
+
+    public AppointmentManager(IAppointmentRepository repository)
     {
-        private readonly IAppointmentRepository _repository;
-
-        public AppointmentManager(IAppointmentRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public IEnumerable<Appointment> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
-        public Appointment GetById(int id)
-        {
-            return _repository.GetById(id);
-        }
-
-        public void Add(Appointment appointment)
-        {
-            _repository.Add(appointment);
-        }
-
-        public void Update(Appointment appointment)
-        {
-            _repository.Update(appointment);
-        }
-
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
-        }
-
-        public IEnumerable<Appointment> GetByDoctorId(int doctorId)
-        {
-            return _repository.GetByDoctorId(doctorId);
-        }
+        _repository = repository;
     }
-}
+
+    public async Task<IEnumerable<Appointment>> GetAll()
+    {
+        return await _repository.GetAll();
+    }
+
+    public async Task<Appointment> GetById(int id)
+    {
+        return await _repository.GetById(id);
+    }
+
+    public async Task<IEnumerable<Appointment>> GetDoctorAppointments(int doctorId)
+    {
+        return await _repository.GetDoctorAppointments(doctorId, DateTime.Now);
+    }
+}}

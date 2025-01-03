@@ -1,9 +1,11 @@
 namespace HMS.Server.API.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Projet.BLL.Contract;
-    using Projet.Entities;
+   
+   
     using Microsoft.AspNetCore.Authorization;
+    using global::Projet.BLL.Contract;
+    using global::Projet.Entities;
 
     [ApiController]
     [Route("api/[controller]")]

@@ -17,5 +17,10 @@ namespace Projet.BLL
             _repo.Add(report);
             return report;
         }
+        public LabReport Update(LabReport report)
+        {
+            _repo.Update(report);
+            return report;
+        }
     }
 }

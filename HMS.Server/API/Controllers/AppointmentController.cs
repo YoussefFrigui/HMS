@@ -1,72 +1,97 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Projet.BLL.Contract;
 using Projet.Entities;
+using Projet.Services;
+using Projet.ViewModel;
+using System;
+using System.Threading.Tasks;
 
-namespace HMS.Server.API.Controllers
+namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
     public class AppointmentController : ControllerBase
     {
-        private readonly IAppointmentManager _manager;
+        private readonly AppointmentService _appointmentService;
 
-        public AppointmentController(IAppointmentManager manager)
+        public AppointmentController(AppointmentService appointmentService)
         {
-            _manager = manager;
-        }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var appointments = _manager.GetAll();
-            return Ok(appointments);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var appointment = _manager.GetById(id);
-            return appointment == null ? NotFound() : Ok(appointment);
+            _appointmentService = appointmentService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Appointment appointment)
+        public async Task<IActionResult> Create([FromBody] AppointmentViewModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                var appointment = new Appointment
+                {
+                    DoctorId = model.DoctorId,
+                    PatientId = model.PatientId,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details
+                };
 
-            var createdAppointment = _manager.Add(appointment);
-            return CreatedAtAction(nameof(GetById), new { id = createdAppointment.Id }, createdAppointment);
+                var result = await _appointmentService.CreateAppointment(appointment);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Appointment appointment)
+        public async Task<IActionResult> Update(int id, [FromBody] AppointmentViewModel model)
         {
-            if (id != appointment.Id)
-                return BadRequest("Appointment ID mismatch.");
+            try
+            {
+                var appointment = new Appointment
+                {
+                    Id = id,
+                    DoctorId = model.DoctorId,
+                    PatientId = model.PatientId,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details,
+                    Status = model.Status
+                };
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var existingAppointment = _manager.GetById(id);
-            if (existingAppointment == null)
-                return NotFound();
-
-            _manager.Update(appointment);
-            return NoContent();
+                var result = await _appointmentService.UpdateAppointment(appointment);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Cancel(int id)
         {
-            var appointment = _manager.GetById(id);
-            if (appointment == null)
-                return NotFound();
+            try
+            {
+                var result = await _appointmentService.CancelAppointment(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            _manager.Delete(id);
-            return NoContent();
+        [HttpGet("doctor/{doctorId}")]
+        public async Task<IActionResult> GetDoctorAppointments(int doctorId, [FromQuery] DateTime date)
+        {
+            var appointments = await _appointmentService.GetDoctorAppointments(doctorId, date);
+            return Ok(appointments);
+        }
+
+        [HttpGet("patient/{patientId}")]
+        public async Task<IActionResult> GetPatientAppointments(int patientId)
+        {
+            var appointments = await _appointmentService.GetPatientAppointments(patientId);
+            return Ok(appointments);
         }
     }
 }

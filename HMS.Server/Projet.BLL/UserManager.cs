@@ -28,5 +28,14 @@ namespace Projet.BLL
         public void DeleteUser(int id) => _userRepo.Delete(id);
 
         public User GetUserByEmail(string email) => _userRepo.GetByEmail(email);
+
+        public User Authenticate(string email, string password)
+        {
+            var user = _userRepo.GetByEmail(email);
+            if (user == null || user.Password != password)
+                return null;
+            return user;
+        }
     }
+    
 }
