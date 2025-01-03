@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Projet.Middleware;
+using Projet.BLL.Contract;
+using Projet.BLL;
 
 namespace HMS.Server
 {
@@ -47,7 +49,8 @@ namespace HMS.Server
     services.AddScoped<DoctorService>();
     services.AddScoped<PatientService>();
     services.AddScoped<AppointmentService>();
-    
+     // Register Managers
+    services.AddScoped<IUserManager, UserManager>();
     
 
     services.AddControllers();

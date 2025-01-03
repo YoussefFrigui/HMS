@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Projet.BLL.Contract;
-
 using Projet.Entities;
 using Projet.ViewModel;
 using System;

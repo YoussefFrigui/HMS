@@ -1,6 +1,7 @@
 using Projet.BLL.Contract;
 using Projet.DAL.Contracts;
 using Projet.Entities;
+using Projet.Services;
 using System.Collections.Generic;
 
 namespace Projet.BLL
@@ -32,10 +33,11 @@ namespace Projet.BLL
         public User Authenticate(string email, string password)
         {
             var user = _userRepo.GetByEmail(email);
-            if (user == null || user.Password != password)
+            if (user == null || !PasswordHasher.VerifyPassword(password, user.Password)){
+
                 return null;
+        }
             return user;
         }
     }
-    
 }
