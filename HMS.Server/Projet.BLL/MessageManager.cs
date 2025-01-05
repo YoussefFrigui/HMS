@@ -15,12 +15,12 @@ namespace Projet.BLL
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public void Add(Message entity)
+        public void Add(Message message)
         {
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
 
-            _repository.Add(entity);
+            _repository.Add(message);
         }
 
        
