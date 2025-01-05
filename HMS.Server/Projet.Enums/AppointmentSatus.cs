@@ -1,10 +1,11 @@
 namespace Projet.Enums
 {
+    
     public enum AppointmentStatus
-    {
-        Scheduled,
-        Completed,
-        Cancelled,
-        NoShow
-    }
+{
+    Scheduled = 1,
+    Confirmed = 2,
+    Cancelled = 3,
+    Completed = 4
+}
 }

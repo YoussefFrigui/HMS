@@ -9,7 +9,7 @@ namespace Projet.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Patient")]
+    [Authorize(Policy = "RequirePatientRole")]
     public class PatientController : ControllerBase
     {
         private readonly PatientService _patientService;

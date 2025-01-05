@@ -21,16 +21,15 @@ namespace Projet.DAL
             _context.SaveChanges();
         }
 
-        public User GetById(int id)
+        public User? GetById(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        public User GetByEmail(string email)
+        public User? GetByEmail(string email)
         {
             return _context.Users.FirstOrDefault(u => u.Email == email);
         }
-
         public void Update(User user)
         {
             _context.Users.Update(user);

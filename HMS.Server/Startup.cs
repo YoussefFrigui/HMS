@@ -15,6 +15,7 @@ using System.Text;
 using Projet.Middleware;
 using Projet.BLL.Contract;
 using Projet.BLL;
+using System.Security.Claims;
 
 namespace HMS.Server
 {
@@ -27,7 +28,7 @@ namespace HMS.Server
 
         public IConfiguration Configuration { get; }
 
-       public void ConfigureServices(IServiceCollection services)
+      public void ConfigureServices(IServiceCollection services)
 {
     // Add DbContext
     services.AddDbContext<ApplicationDbContext>(options =>
@@ -49,35 +50,53 @@ namespace HMS.Server
     services.AddScoped<DoctorService>();
     services.AddScoped<PatientService>();
     services.AddScoped<AppointmentService>();
-     // Register Managers
-    services.AddScoped<IUserManager, UserManager>();
     
+
+    // Register Managers
+    services.AddScoped<IUserManager, UserManager>();
 
     services.AddControllers();
     
     // Add Authentication and Authorization
     services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Secret"])),
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            };
-        });
-
-    services.AddAuthorization(options =>
+    .AddJwtBearer(options =>
     {
-        options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-        options.AddPolicy("RequireDoctorRole", policy => policy.RequireRole("Doctor"));
-        options.AddPolicy("RequirePatientRole", policy => policy.RequireRole("Patient"));
+        var secret = Configuration["Jwt:Secret"] ?? 
+            throw new InvalidOperationException("JWT Secret not configured");
+            
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(secret)),
+            ValidateIssuer = true,
+            ValidIssuer = Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
     });
 
-    
+    services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => 
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => 
+                (c.Type == ClaimTypes.Role && c.Value == "1"))));
+                
+    options.AddPolicy("RequireDoctorRole", policy => 
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => 
+                (c.Type == ClaimTypes.Role && c.Value == "2"))));
+                
+    options.AddPolicy("RequirePatientRole", policy => 
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => 
+                (c.Type == ClaimTypes.Role && c.Value == "3"))));
+});
+
+   
 
     // Add Swagger
     services.AddSwaggerGen(c =>
@@ -131,6 +150,5 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
-    });
+    });}
 }}
-    }

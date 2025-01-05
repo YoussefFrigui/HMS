@@ -2,8 +2,8 @@ namespace Projet.Enums
 {
     public enum Role
     {
-        Patient,
-        Doctor,
-        Admin
+        Admin = 1,
+        Doctor = 2,
+        Patient = 3
     }
 }

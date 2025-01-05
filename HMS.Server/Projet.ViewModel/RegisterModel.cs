@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Projet.Enums;
 namespace Projet.ViewModel
 {
     public class RegisterModel
@@ -11,6 +12,6 @@ namespace Projet.ViewModel
         [MinLength(6)]
         public string Password { get; set; }
         [Required]
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 }

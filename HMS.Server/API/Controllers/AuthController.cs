@@ -38,27 +38,29 @@ namespace Projet.API.Controllers
             return Ok(new { Token = tokenString });
         }
 
-        private string GenerateJWTToken(User user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+      private string GenerateJWTToken(User user)
+{
+    var secret = _config["Jwt:Secret"] ?? 
+        throw new InvalidOperationException("JWT Secret not configured");
+        
+    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Role, user.Role.ToString())
+    };
 
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_config["Jwt:ExpiryMinutes"])),
-                signingCredentials: credentials
-            );
+    var token = new JwtSecurityToken(
+        issuer: _config["Jwt:Issuer"],
+        audience: _config["Jwt:Audience"],
+        claims: claims,
+        expires: DateTime.Now.AddHours(1),
+        signingCredentials: credentials
+    );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-    }
+    return new JwtSecurityTokenHandler().WriteToken(token);
 }
+}}

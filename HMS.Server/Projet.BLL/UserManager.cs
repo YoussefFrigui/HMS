@@ -8,36 +8,53 @@ namespace Projet.BLL
 {
     public class UserManager : IUserManager
     {
-        private readonly IUserRepository _userRepo;
-        public UserManager(IUserRepository userRepo) => _userRepo = userRepo;
+        private readonly IUserRepository _userRepository;
 
-        public IEnumerable<User> GetAllUsers() => _userRepo.GetAll();
-        public User GetUserById(int id) => _userRepo.GetById(id);
+        public UserManager(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public User Authenticate(string email, string password)
+        {
+            var user = _userRepository.GetByEmail(email);
+            if (user == null || !PasswordHasher.VerifyPassword(password, user.Password))
+            {
+                return null;
+            }
+            return user;
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _userRepository.GetAll();
+        }
+
+        public User GetUserById(int id)
+        {
+            return _userRepository.GetById(id);
+        }
 
         public User CreateUser(User user)
         {
-            _userRepo.Add(user);
+            _userRepository.Add(user);
             return user;
         }
 
         public User UpdateUser(User user)
         {
-            _userRepo.Update(user);
+            _userRepository.Update(user);
             return user;
         }
 
-        public void DeleteUser(int id) => _userRepo.Delete(id);
-
-        public User GetUserByEmail(string email) => _userRepo.GetByEmail(email);
-
-        public User Authenticate(string email, string password)
+        public void DeleteUser(int id)
         {
-            var user = _userRepo.GetByEmail(email);
-            if (user == null || !PasswordHasher.VerifyPassword(password, user.Password)){
-
-                return null;
+            _userRepository.Delete(id);
         }
-            return user;
+
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetByEmail(email);
         }
     }
 }

@@ -13,12 +13,6 @@ namespace Projet.Services
             _doctorRepository = doctorRepository;
         }
 
-        // Authentication
-        public User LoginDoctor(string email, string password)
-        {
-            return _doctorRepository.ValidateDoctorLogin(email, password);
-        }
-
         // Medical history
         public IEnumerable<MedicalHistory> GetPatientMedicalHistory(int patientId)
         {

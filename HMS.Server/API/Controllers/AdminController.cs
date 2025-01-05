@@ -1,35 +1,47 @@
 using Microsoft.AspNetCore.Mvc;
 using Projet.Enums;
-using Projet.Services;
+using Projet.BLL.Contract;
 using Projet.ViewModel;
 using Projet.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Projet.Services;
 
 namespace Projet.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "RequireAdminRole")]
     public class AdminController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserManager _userManager;
 
-        public AdminController(UserService userService)
+        public AdminController(IUserManager userManager)
         {
-            _userService = userService;
+            _userManager = userManager;
         }
 
         [HttpPost("add-user")]
-        public IActionResult AddUser([FromBody] UserViewModel model)
+        public IActionResult AddUser([FromBody] RegisterModel model)
         {
-            _userService.CreateUser(model.Email, model.Password, Enum.Parse<Role>(model.Role, true));
-            return Ok("User added successfully!");
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest("Invalid client request");
+
+            var user = new User
+            {
+                Email = model.Email,
+                Password = PasswordHasher.HashPassword(model.Password),
+                Role = model.Role
+            };
+
+            _userManager.CreateUser(user);
+            return Ok();
         }
 
         [HttpGet("view-user/{userId}")]
         public IActionResult ViewUser(int userId)
         {
-            var user = _userService.GetUserById(userId);
+            var user = _userManager.GetUserById(userId);
             if (user == null)
                 return NotFound("User not found.");
 
@@ -39,23 +51,22 @@ namespace Projet.API.Controllers
         [HttpPut("update-user")]
         public IActionResult UpdateUser([FromBody] UserViewModel model)
         {
-            // Map UserViewModel to User entity
             var user = new User
             {
                 Id = model.Id,
                 Email = model.Email,
-                Password = model.Password,
-                Role = Enum.Parse<Role>(model.Role, true) // Parse string to Role enum
+                Password = PasswordHasher.HashPassword(model.Password),
+                Role = Enum.Parse<Role>(model.Role, true)
             };
 
-            _userService.UpdateUser(user);
+            _userManager.UpdateUser(user);
             return Ok("User updated successfully!");
         }
 
         [HttpDelete("delete-user/{userId}")]
         public IActionResult DeleteUser(int userId)
         {
-            _userService.DeleteUser(userId);
+            _userManager.DeleteUser(userId);
             return Ok("User deleted successfully!");
         }
     }

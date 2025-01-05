@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:50844",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\..\\hms.client",
+"WorkingDirectory": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\..\\hms.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }
