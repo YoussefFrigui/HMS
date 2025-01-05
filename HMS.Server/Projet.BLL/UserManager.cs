@@ -1,60 +1,61 @@
 using Projet.BLL.Contract;
+using Projet.DAL;
 using Projet.DAL.Contracts;
 using Projet.Entities;
-using Projet.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Projet.BLL
 {
     public class UserManager : IUserManager
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _repository;
 
-        public UserManager(IUserRepository userRepository)
+        public UserManager(IUserRepository repository)
         {
-            _userRepository = userRepository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public User Authenticate(string email, string password)
+        public void Add(User entity)
         {
-            var user = _userRepository.GetByEmail(email);
-            if (user == null || !PasswordHasher.VerifyPassword(password, user.Password))
-            {
-                return null;
-            }
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _repository.Add(entity);
+        }
+
+        public void Delete(int id)
+        {
+            var user = GetById(id);
+            _repository.Delete(id);
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return _repository.GetAll();
+        }
+
+        public User GetById(int id)
+        {
+            var user = _repository.GetById(id);
+            if (user == null)
+                throw new KeyNotFoundException($"User with ID {id} not found");
             return user;
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public void Update(User entity)
         {
-            return _userRepository.GetAll();
-        }
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
 
-        public User GetUserById(int id)
-        {
-            return _userRepository.GetById(id);
+            _repository.Update(entity);
         }
-
-        public User CreateUser(User user)
-        {
-            _userRepository.Add(user);
-            return user;
-        }
-
-        public User UpdateUser(User user)
-        {
-            _userRepository.Update(user);
-            return user;
-        }
-
-        public void DeleteUser(int id)
-        {
-            _userRepository.Delete(id);
-        }
-
+    
         public User GetUserByEmail(string email)
         {
-            return _userRepository.GetByEmail(email);
+            return _repository.GetByEmail(email);
         }
+
+        
     }
 }

@@ -7,6 +7,8 @@ namespace Projet.BLL.Contract
     {
         IEnumerable<LabReport> GetAll();
         LabReport GetById(int id);
-        LabReport Add(LabReport report);
+        void Add(LabReport entity);
+        void Update(LabReport entity);
+        void Delete(int id);
     }
 }

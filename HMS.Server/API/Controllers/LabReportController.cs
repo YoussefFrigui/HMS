@@ -32,8 +32,8 @@ namespace HMS.Server.API.Controllers
         [HttpPost]
         public IActionResult Create(LabReport report)
         {
-            var created = _manager.Add(report);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            _manager.Add(report);
+            return CreatedAtAction(nameof(GetById), new { id = report.Id }, report);
         }
     }
 }

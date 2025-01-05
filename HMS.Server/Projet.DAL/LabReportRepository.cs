@@ -26,4 +26,13 @@ namespace Projet.DAL
             _context.LabReports.Update(report);
             _context.SaveChanges();
     }
-}}
+    
+        public void Delete(int id)
+        {
+            var report = GetById(id);
+            _context.LabReports.Remove(report);
+            _context.SaveChanges();
+        }
+    }
+
+}

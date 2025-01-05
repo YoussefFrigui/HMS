@@ -1,26 +1,53 @@
 using Projet.BLL.Contract;
 using Projet.DAL.Contracts;
 using Projet.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace Projet.BLL
 {
     public class LabReportManager : ILabReportManager
     {
-        private readonly ILabReportRepository _repo;
-        public LabReportManager(ILabReportRepository repo) => _repo = repo;
+        private readonly ILabReportRepository _repository;
 
-        public IEnumerable<LabReport> GetAll() => _repo.GetAll();
-        public LabReport GetById(int id) => _repo.GetById(id);
-        public LabReport Add(LabReport report)
+        public LabReportManager(ILabReportRepository repository)
         {
-            _repo.Add(report);
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        }
+
+        public void Add(LabReport entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _repository.Add(entity);
+        }
+
+        public void Delete(int id)
+        {
+            var report = GetById(id);
+            _repository.Delete(id);
+        }
+
+        public IEnumerable<LabReport> GetAll()
+        {
+            return _repository.GetAll();
+        }
+
+        public LabReport GetById(int id)
+        {
+            var report = _repository.GetById(id);
+            if (report == null)
+                throw new KeyNotFoundException($"Lab Report with ID {id} not found");
             return report;
         }
-        public LabReport Update(LabReport report)
+
+        public void Update(LabReport entity)
         {
-            _repo.Update(report);
-            return report;
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _repository.Update(entity);
         }
     }
 }

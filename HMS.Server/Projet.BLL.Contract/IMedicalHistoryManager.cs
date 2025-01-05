@@ -7,8 +7,8 @@ namespace Projet.BLL.Contract
     {
         IEnumerable<MedicalHistory> GetAll();
         MedicalHistory GetById(int id);
-        MedicalHistory Add(MedicalHistory history);
-        MedicalHistory Update(MedicalHistory history);
+        void Add(MedicalHistory entity);
+        void Update(MedicalHistory entity);
         void Delete(int id);
     }
 }

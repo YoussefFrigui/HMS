@@ -1,10 +1,12 @@
+// UserService.cs
 using Projet.DAL.Contracts;
 using Projet.Entities;
 using Projet.Enums;
+using Projet.Services;
 
 namespace Projet.Services
 {
-    public class UserService
+    public class UserService 
     {
         private readonly IUserRepository _userRepository;
 
@@ -15,10 +17,11 @@ namespace Projet.Services
 
         public void CreateUser(string email, string password, Role role)
         {
+            var hashedPassword = PasswordHasher.HashPassword(password);
             var user = new User
             {
                 Email = email,
-                Password = PasswordHasher.HashPassword(password),
+                Password = hashedPassword,
                 Role = role
             };
             _userRepository.Add(user);
@@ -37,6 +40,11 @@ namespace Projet.Services
         public void DeleteUser(int id)
         {
             _userRepository.Delete(id);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetByEmail(email);
         }
     }
 }

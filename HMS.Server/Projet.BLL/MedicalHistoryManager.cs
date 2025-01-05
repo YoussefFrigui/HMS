@@ -1,27 +1,53 @@
 using Projet.BLL.Contract;
 using Projet.DAL.Contracts;
 using Projet.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace Projet.BLL
 {
     public class MedicalHistoryManager : IMedicalHistoryManager
     {
-        private readonly IMedicalHistoryRepository _repo;
-        public MedicalHistoryManager(IMedicalHistoryRepository repo) => _repo = repo;
+        private readonly IMedicalHistoryRepository _repository;
 
-        public IEnumerable<MedicalHistory> GetAll() => _repo.GetAll();
-        public MedicalHistory GetById(int id) => _repo.GetById(id);
-        public MedicalHistory Add(MedicalHistory history)
+        public MedicalHistoryManager(IMedicalHistoryRepository repository)
         {
-            _repo.Add(history);
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        }
+
+        public void Add(MedicalHistory entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _repository.Add(entity);
+        }
+
+        public void Delete(int id)
+        {
+            var history = GetById(id);
+            _repository.Delete(id);
+        }
+
+        public IEnumerable<MedicalHistory> GetAll()
+        {
+            return _repository.GetAll();
+        }
+
+        public MedicalHistory GetById(int id)
+        {
+            var history = _repository.GetById(id);
+            if (history == null)
+                throw new KeyNotFoundException($"Medical History with ID {id} not found");
             return history;
         }
-        public MedicalHistory Update(MedicalHistory history)
+
+        public void Update(MedicalHistory entity)
         {
-            _repo.Update(history);
-            return history;
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _repository.Update(entity);
         }
-        public void Delete(int id) => _repo.Delete(id);
     }
 }

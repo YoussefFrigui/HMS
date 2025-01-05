@@ -1,10 +1,11 @@
+using Projet.BLL;
 using Projet.DAL.Contracts;
 using Projet.Entities;
 using System.Collections.Generic;
 
 namespace Projet.Services
 {
-    public class DoctorService
+    public class DoctorService 
     {
         private readonly IDoctorRepository _doctorRepository;
 

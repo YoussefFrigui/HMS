@@ -1,9 +1,10 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Projet.BLL.Contract;
-using Projet.Entities;
 using Projet.ViewModel;
+using Projet.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,43 +25,64 @@ namespace Projet.API.Controllers
             _config = config;
         }
 
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel login)
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterModel registerModel)
         {
-            if (login == null || string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
-                return BadRequest("Invalid client request");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var user = _userManager.Authenticate(login.Email, login.Password);
-            if (user == null)
-                return Unauthorized("Invalid credentials");
+            var user = new User
+            {
+                Email = registerModel.Email,
+                Password = Projet.Services.PasswordHasher.HashPassword(registerModel.Password),
+                Role = registerModel.Role
+            };
 
-            var tokenString = GenerateJWTToken(user);
-            return Ok(new { Token = tokenString });
+            _userManager.Add(user);
+            return Ok(new { Message = "User registered successfully" });
         }
 
-      private string GenerateJWTToken(User user)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginModel loginModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = _userManager.GetUserByEmail(loginModel.Email);
+            if (user == null || !Projet.Services.PasswordHasher.VerifyPassword(loginModel.Password, user.Password))
+                return Unauthorized("Invalid credentials");
+
+            var token = GenerateJWTToken(user);
+            return Ok(new { Token = token });
+        }
+
+        // AuthController.cs
+private string GenerateJWTToken(User user)
 {
-    var secret = _config["Jwt:Secret"] ?? 
-        throw new InvalidOperationException("JWT Secret not configured");
-        
+    var secret = _config["Jwt:Secret"];
+    if (string.IsNullOrEmpty(secret))
+    {
+        throw new ArgumentNullException("Jwt:Secret", "JWT Secret is not configured.");
+    }
+
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
     var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
     var claims = new[]
     {
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.Role, user.Role.ToString())
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.Role, user.Role.ToString()) // Ensure Role is a string like "Admin", "Doctor", "Patient"
     };
 
     var token = new JwtSecurityToken(
         issuer: _config["Jwt:Issuer"],
         audience: _config["Jwt:Audience"],
         claims: claims,
-        expires: DateTime.Now.AddHours(1),
+        expires: DateTime.Now.AddMinutes(Convert.ToDouble(_config["Jwt:ExpiryMinutes"])),
         signingCredentials: credentials
     );
 
     return new JwtSecurityTokenHandler().WriteToken(token);
 }
-}}
+}
+}

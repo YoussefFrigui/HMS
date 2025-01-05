@@ -9,6 +9,11 @@ namespace Projet.DAL.Contracts
         LabReport GetById(int id);
         void Add(LabReport report);
         void Update(LabReport report);
+
+        void Delete(int id);
+
+
+
         
     }
 }

@@ -32,8 +32,8 @@ namespace HMS.Server.API.Controllers
         [HttpPost]
         public IActionResult Create(Message message)
         {
-            var created = _manager.Add(message);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            _manager.Add(message);
+            return CreatedAtAction(nameof(GetById), new { id = message.Id }, message);
         }
     }
 }

@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 namespace Projet.DAL.Contracts
 {
     public interface IAppointmentRepository
-    {
-        Task<Appointment> GetById(int id);
-        Task<IEnumerable<Appointment>> GetAll();
-        Task<IEnumerable<Appointment>> GetDoctorAppointments(int doctorId, DateTime date);
-        Task<IEnumerable<Appointment>> GetPatientAppointments(int patientId);
-        Task<bool> Add(Appointment appointment);
-        Task<bool> Update(Appointment appointment);
-        Task<bool> Delete(int id);
-        Task<bool> HasConflict(int doctorId, DateTime appointmentDate);
+{
+    void Add(Appointment appointment);
+    Appointment? GetById(int id);
+    IEnumerable<Appointment> GetAll();
+    void Update(Appointment appointment);
+    void Delete(int id);
+    bool HasConflict(int doctorId, DateTime appointmentDate);
+        IEnumerable<Appointment> GetDoctorAppointments(int doctorId, DateTime now);
     }
 }

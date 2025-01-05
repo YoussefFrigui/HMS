@@ -80,20 +80,14 @@ namespace HMS.Server
 
     services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireAdminRole", policy => 
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c => 
-                (c.Type == ClaimTypes.Role && c.Value == "1"))));
-                
-    options.AddPolicy("RequireDoctorRole", policy => 
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c => 
-                (c.Type == ClaimTypes.Role && c.Value == "2"))));
-                
-    options.AddPolicy("RequirePatientRole", policy => 
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c => 
-                (c.Type == ClaimTypes.Role && c.Value == "3"))));
+    options.AddPolicy("RequireAdminRole", policy =>
+        policy.RequireClaim(ClaimTypes.Role, "Admin"));
+
+    options.AddPolicy("RequireDoctorRole", policy =>
+        policy.RequireClaim(ClaimTypes.Role, "Doctor"));
+
+    options.AddPolicy("RequirePatientRole", policy =>
+        policy.RequireClaim(ClaimTypes.Role, "Patient"));
 });
 
    

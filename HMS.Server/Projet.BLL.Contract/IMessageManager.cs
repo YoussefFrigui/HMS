@@ -7,6 +7,7 @@ namespace Projet.BLL.Contract
     {
         IEnumerable<Message> GetAll();
         Message GetById(int id);
-        Message Add(Message message);
+        void Add(Message entity);
+        
     }
 }

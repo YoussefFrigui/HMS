@@ -3,181 +3,178 @@ using Microsoft.AspNetCore.Mvc;
 using Projet.BLL;
 using Projet.Entities;
 using Projet.Enums;
-using Projet.Services;
 using Projet.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using Projet.Services;
 
 namespace Projet.API.Controllers
 {
-  [ApiController]
-[Route("api/[controller]")]
-[Authorize(Policy = "RequireDoctorRole")]
-public class DoctorController : ControllerBase
-{
-    private readonly DoctorService _doctorService;
-    private readonly ILogger<DoctorController> _logger;
-
-    public DoctorController(DoctorService doctorService, ILogger<DoctorController> logger)
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize(Policy = "RequireDoctorRole")]
+    public class DoctorController : ControllerBase
     {
-        _doctorService = doctorService;
-        _logger = logger;
-    }
+        private readonly DoctorService _doctorService;
+        private readonly ILogger<DoctorController> _logger;
 
-    [HttpGet("medical-history/{patientId}")]
-    public ActionResult<IEnumerable<MedicalHistory>> GetMedicalHistory(int patientId)
-    {
-        try
+        public DoctorController(DoctorService doctorService, ILogger<DoctorController> logger)
         {
-            var history = _doctorService.GetPatientMedicalHistory(patientId);
-            return Ok(history);
+            _doctorService = doctorService;
+            _logger = logger;
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting medical history for patient {PatientId}", patientId);
-            return BadRequest(new { message = ex.Message });
-        }
-    }
 
-    [HttpPost("send-message")]
-    public ActionResult SendMessage([FromBody] MessageViewModel model)
-    {
-        try
+        [HttpGet("medical-history/{patientId}")]
+        public ActionResult<IEnumerable<MedicalHistory>> GetMedicalHistory(int patientId)
         {
-            var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var message = new Message
+            try
             {
-                SenderId = doctorId,
-                RecipientId = model.ReceiverId,
-                Content = model.Content,
+                var history = _doctorService.GetPatientMedicalHistory(patientId);
+                return Ok(history);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting medical history for patient {PatientId}", patientId);
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("send-message")]
+        public ActionResult SendMessage([FromBody] MessageViewModel model)
+        {
+            try
+            {
+                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var message = new Message
+                {
+                    SenderId = doctorId,
+                    RecipientId = model.ReceiverId,
+                    Content = model.Content,
+                };
                 
-            };
-            
-            _doctorService.SendMessage(message);
-            return Ok(new { message = "Message sent successfully" });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error sending message");
-            return BadRequest(new { message = ex.Message });
-        }
-    }
-
-    [HttpPost("appointments")]
-public async Task<IActionResult> CreateAppointment([FromBody] AppointmentViewModel model)
-{
-    try
-    {
-        var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-        var doctorEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-
-        var appointment = new Appointment
-        {
-            DoctorId = doctorId,
-            PatientId = model.PatientId,
-            PatientName = model.PatientName,
-            AppointmentDate = model.AppointmentDate,
-            Details = model.Details ?? string.Empty,
-            Status = AppointmentStatus.Scheduled,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        await _doctorService.AddAppointment(appointment);
-        return Ok(new { message = "Appointment created successfully" });
-    }
-    catch (AppointmentConflictException ex)
-    {
-        return Conflict(new { message = ex.Message });
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error creating appointment");
-        return BadRequest(new { message = ex.Message });
-    }
-}
-
-    [HttpPut("appointments/{appointmentId}")]
-    public ActionResult UpdateAppointment(int appointmentId, [FromBody] AppointmentViewModel model)
-    {
-        try
-        {
-            var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var appointment = new Appointment
+                _doctorService.SendMessage(message);
+                return Ok(new { message = "Message sent successfully" });
+            }
+            catch (Exception ex)
             {
-                Id = appointmentId,
-                DoctorId = doctorId,
-                PatientId = model.PatientId,
-                PatientName = model.PatientName,
-                AppointmentDate = model.AppointmentDate,
-                Details = model.Details,
-                Status = model.Status
-            };
+                _logger.LogError(ex, "Error sending message");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
-            _doctorService.UpdateAppointment(appointment);
-            return Ok(new { message = "Appointment updated successfully" });
-        }
-        catch (Exception ex)
+        [HttpPost("appointments")]
+        public IActionResult CreateAppointment([FromBody] AppointmentViewModel model)
         {
-            _logger.LogError(ex, "Error updating appointment {AppointmentId}", appointmentId);
-            return BadRequest(new { message = ex.Message });
-        }
-    }
-
-    [HttpDelete("appointments/{appointmentId}")]
-    public ActionResult DeleteAppointment(int appointmentId)
-    {
-        try
-        {
-            _doctorService.DeleteAppointment(appointmentId);
-            return Ok(new { message = "Appointment deleted successfully" });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting appointment {AppointmentId}", appointmentId);
-            return BadRequest(new { message = ex.Message });
-        }
-    }
-
-    [HttpPost("lab-reports")]
-    public ActionResult CreateLabReport([FromBody] LabReportViewModel model)
-    {
-        try
-        {
-            var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var report = new LabReport
+            try
             {
-                PatientId = model.PatientId,
-                ReportName = model.ReportName,
-                ResultDetails = model.ResultDetails,
+                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
                 
-            };
+                var appointment = new Appointment
+                {
+                    DoctorId = doctorId,
+                    PatientId = model.PatientId,
+                    PatientName = model.PatientName,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details ?? string.Empty,
+                    Status = AppointmentStatus.Scheduled,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            _doctorService.AddLabReport(report);
-            return Ok(new { message = "Lab report created successfully" });
+                _doctorService.AddAppointment(appointment);
+                return Ok(new { message = "Appointment created successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating appointment");
+                return BadRequest(new { message = ex.Message });
+            }
         }
-        catch (Exception ex)
+
+        // ...existing methods...
+
+        [HttpPut("appointments/{appointmentId}")]
+        public ActionResult UpdateAppointment(int appointmentId, [FromBody] AppointmentViewModel model)
         {
-            _logger.LogError(ex, "Error creating lab report");
-            return BadRequest(new { message = ex.Message });
+            try
+            {
+                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var appointment = new Appointment
+                {
+                    Id = appointmentId,
+                    DoctorId = doctorId,
+                    PatientId = model.PatientId,
+                    PatientName = model.PatientName,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details ?? string.Empty,
+                    Status = model.Status,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _doctorService.UpdateAppointment(appointment);
+                return Ok(new { message = "Appointment updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating appointment");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("appointments/{appointmentId}")]
+        public ActionResult DeleteAppointment(int appointmentId)
+        {
+            try
+            {
+                _doctorService.DeleteAppointment(appointmentId);
+                return Ok(new { message = "Appointment deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting appointment");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("lab-reports")]
+        public ActionResult CreateLabReport([FromBody] LabReportViewModel model)
+        {
+            try
+            {
+                var labReport = new LabReport
+                {
+                    DoctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0"),
+                    PatientId = model.PatientId,
+                    ResultDetails = model.ResultDetails,
+                };
+
+                _doctorService.AddLabReport(labReport);
+                return Ok(new { message = "Lab report created successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating lab report");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("lab-reports/{labReportId}")]
+        public ActionResult<LabReport> GetLabReport(int labReportId)
+        {
+            try
+            {
+                var report = _doctorService.GetLabReportById(labReportId);
+                if (report == null)
+                    return NotFound(new { message = "Lab report not found" });
+
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving lab report");
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
-
-    [HttpGet("lab-reports/{labReportId}")]
-    public ActionResult<LabReport> GetLabReport(int labReportId)
-    {
-        try
-        {
-            var report = _doctorService.GetLabReportById(labReportId);
-            if (report == null)
-                return NotFound(new { message = "Lab report not found" });
-
-            return Ok(report);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting lab report {LabReportId}", labReportId);
-            return BadRequest(new { message = ex.Message });
-        }
-    }
-}
 }

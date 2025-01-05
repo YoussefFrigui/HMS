@@ -5,8 +5,11 @@ namespace Projet.BLL.Contract
 {
     public interface IAppointmentManager
     {
-        Task<IEnumerable<Appointment>> GetAll();
-        Task<Appointment> GetById(int id);
-        Task<IEnumerable<Appointment>> GetDoctorAppointments(int doctorId);
+        IEnumerable<Appointment> GetAll();
+        Appointment GetById(int id);
+        IEnumerable<Appointment> GetDoctorAppointments(int doctorId);
+        void Add(Appointment entity);
+        void Update(Appointment entity);
+        void Delete(int id);
     }
 }

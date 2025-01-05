@@ -174,20 +174,8 @@ D:\Workspace\.net\HMS\HMS.Server\obj\Debug\net8.0\refint\HMS.Server.dll
 D:\Workspace\.net\HMS\HMS.Server\obj\Debug\net8.0\HMS.Server.pdb
 D:\Workspace\.net\HMS\HMS.Server\obj\Debug\net8.0\HMS.Server.genruntimeconfig.cache
 D:\Workspace\.net\HMS\HMS.Server\obj\Debug\net8.0\ref\HMS.Server.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.csproj.AssemblyReference.cache
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\spa.proxy.json
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.AssemblyInfoInputs.cache
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.AssemblyInfo.cs
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.csproj.CoreCompileInputs.cache
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.sourcelink.json
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\refint\HMS.Server.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.pdb
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\spa.proxy.json
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\appsettings.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\HMS.Server.staticwebassets.endpoints.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\HMS.Server.exe
@@ -197,6 +185,9 @@ C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\b
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\HMS.Server.pdb
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\Humanizer.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\Microsoft.AspNetCore.SpaProxy.dll
@@ -306,6 +297,15 @@ C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\b
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.csproj.AssemblyReference.cache
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\spa.proxy.json
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.AssemblyInfoInputs.cache
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.AssemblyInfo.cs
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.csproj.CoreCompileInputs.cache
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.sourcelink.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\scopedcss\bundle\HMS.Server.styles.css
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\staticwebassets.development.json
@@ -317,8 +317,8 @@ C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\o
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HMS.Server.props
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.csproj.Up2Date
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\refint\HMS.Server.dll
+C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.pdb
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\HMS.Server.genruntimeconfig.cache
 C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\hms.server\obj\Debug\net8.0\ref\HMS.Server.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\HMS.Server\bin\Debug\net8.0\FluentValidation.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\HMS.Server\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
-C:\Users\yassi\Documents\DOTNET\Hospital managment system\hmsv1\HMS\HMS.Server\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

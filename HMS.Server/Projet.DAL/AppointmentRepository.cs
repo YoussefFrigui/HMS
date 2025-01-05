@@ -2,84 +2,66 @@ using Microsoft.EntityFrameworkCore;
 using Projet.Context;
 using Projet.DAL.Contracts;
 using Projet.Entities;
+using Projet.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Projet.DAL
 {
-    public class AppointmentRepository : IAppointmentRepository
+   public class AppointmentRepository : IAppointmentRepository
+{
+    private readonly ApplicationDbContext _context;
+
+    public AppointmentRepository(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public AppointmentRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+    public void Add(Appointment appointment)
+    {
+        _context.Appointments.Add(appointment);
+        _context.SaveChanges();
+    }
 
-        public async Task<Appointment> GetById(int id)
-        {
-            return await _context.Appointments
-                .Include(a => a.Doctor)
-                .Include(a => a.Patient)
-                .FirstOrDefaultAsync(a => a.Id == id);
-        }
+    public Appointment? GetById(int id)
+    {
+        return _context.Appointments.FirstOrDefault(a => a.Id == id);
+    }
 
-        public async Task<IEnumerable<Appointment>> GetAll()
-        {
-            return await _context.Appointments
-                .Include(a => a.Doctor)
-                .Include(a => a.Patient)
-                .ToListAsync();
-        }
+    public IEnumerable<Appointment> GetAll()
+    {
+        return _context.Appointments.ToList();
+    }
 
-        public async Task<IEnumerable<Appointment>> GetDoctorAppointments(int doctorId, DateTime date)
-        {
-            return await _context.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Date == date.Date)
-                .ToListAsync();
-        }
+    public void Update(Appointment appointment)
+    {
+        _context.Entry(appointment).State = EntityState.Modified;
+        _context.SaveChanges();
+    }
 
-        public async Task<IEnumerable<Appointment>> GetPatientAppointments(int patientId)
+    public void Delete(int id)
+    {
+        var appointment = GetById(id);
+        if (appointment != null)
         {
-            return await _context.Appointments
-                .Where(a => a.PatientId == patientId)
-                .Include(a => a.Doctor)
-                .ToListAsync();
-        }
-
-        public async Task<bool> Add(Appointment appointment)
-        {
-            appointment.CreatedAt = DateTime.UtcNow;
-            _context.Appointments.Add(appointment);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> Update(Appointment appointment)
-        {
-            appointment.UpdatedAt = DateTime.UtcNow;
-            _context.Appointments.Update(appointment);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> Delete(int id)
-        {
-            var appointment = await GetById(id);
-            if (appointment != null)
-            {
-                _context.Appointments.Remove(appointment);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            return false;
-        }
-
-        public async Task<bool> HasConflict(int doctorId, DateTime appointmentDate)
-        {
-            return await _context.Appointments
-                .AnyAsync(a => a.DoctorId == doctorId &&
-                              a.AppointmentDate <= appointmentDate.AddMinutes(30) &&
-                              appointmentDate <= a.AppointmentDate.AddMinutes(30));
+            _context.Appointments.Remove(appointment);
+            _context.SaveChanges();
         }
     }
-}
+
+    public bool HasConflict(int doctorId, DateTime appointmentDate)
+    {
+        return _context.Appointments.Any(a => 
+            a.DoctorId == doctorId && 
+            a.AppointmentDate.Date == appointmentDate.Date &&
+            a.Status != AppointmentStatus.Cancelled);
+    }
+
+    public IEnumerable<Appointment> GetDoctorAppointments(int doctorId, DateTime now)
+    {
+        return _context.Appointments.Where(a => 
+            a.DoctorId == doctorId && 
+            a.AppointmentDate.Date == now.Date);
+    }
+}}

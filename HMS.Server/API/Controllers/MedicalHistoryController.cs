@@ -30,8 +30,8 @@ namespace HMS.Server.API.Controllers
         [HttpPost]
         public IActionResult Create(MedicalHistory history)
         {
-            var created = _manager.Add(history);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            _manager.Add(history);
+            return CreatedAtAction(nameof(GetById), new { id = history.Id }, history);
         }
 
         [HttpPut("{id}")]

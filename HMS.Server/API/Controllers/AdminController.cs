@@ -34,14 +34,14 @@ namespace Projet.API.Controllers
                 Role = model.Role
             };
 
-            _userManager.CreateUser(user);
+            _userManager.Add(user);
             return Ok();
         }
 
         [HttpGet("view-user/{userId}")]
         public IActionResult ViewUser(int userId)
         {
-            var user = _userManager.GetUserById(userId);
+            var user = _userManager.GetById(userId);
             if (user == null)
                 return NotFound("User not found.");
 
@@ -59,14 +59,14 @@ namespace Projet.API.Controllers
                 Role = Enum.Parse<Role>(model.Role, true)
             };
 
-            _userManager.UpdateUser(user);
+            _userManager.Update(user);
             return Ok("User updated successfully!");
         }
 
         [HttpDelete("delete-user/{userId}")]
         public IActionResult DeleteUser(int userId)
         {
-            _userManager.DeleteUser(userId);
+            _userManager.Delete(userId);
             return Ok("User deleted successfully!");
         }
     }
