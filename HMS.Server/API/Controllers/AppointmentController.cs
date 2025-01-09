@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Projet.BLL;
 using Projet.BLL.Contract;
@@ -23,19 +23,29 @@ public class AppointmentController : ControllerBase
         _appointmentManager = (AppointmentManager?)(appointmentManager ?? throw new ArgumentNullException(nameof(appointmentManager)));
     }
 
-          [HttpGet]
-        public ActionResult<IEnumerable<Appointment>> GetAll()
+         [HttpGet]
+public ActionResult<IEnumerable<Appointment>> GetAll([FromQuery] int? doctorId, [FromQuery] int? patientId)
+{
+    try
+    {
+        if (doctorId.HasValue)
         {
-            try
-            {
-                var appointments = _appointmentManager.GetAll();
-                return Ok(appointments);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var appointments = _appointmentManager.GetByDoctorId(doctorId.Value);
+            return Ok(appointments);
         }
+        if (patientId.HasValue)
+        {
+            var appointments = _appointmentManager.GetByPatientId(patientId.Value);
+            return Ok(appointments);
+        }
+        var allAppointments = _appointmentManager.GetAll();
+        return Ok(allAppointments);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
 
         [HttpGet("{id}")]
         public ActionResult<Appointment> GetById(int id)
@@ -137,3 +147,4 @@ public class AppointmentController : ControllerBase
         }
     }
 }
+*/

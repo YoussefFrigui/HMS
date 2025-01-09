@@ -1,6 +1,9 @@
+using System.Security.Claims;
 using HMS.Server.Projet.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Projet.BLL;
+using Projet.DAL;
 using Projet.Entities;
 using Projet.Services;
 using Projet.ViewModel;
@@ -14,23 +17,19 @@ namespace Projet.API.Controllers
     {
         private readonly PatientService _patientService;
 
-        public PatientController(PatientService patientService)
+        private readonly AppointmentManager appointmentManager;
+
+        private readonly LabReportManager labReportManager;
+
+        private readonly MedicalHistoryManager medicalHistoryManager;
+
+        private readonly ILogger<PatientController> _logger;
+
+        public PatientController(PatientService patientService, AppointmentManager appointmentManager, LabReportManager labReportManager, MedicalHistoryManager medicalHistoryManager)
         {
             _patientService = patientService;
         }
 
-        /// <summary>
-        /// Patient login with email and password.
-        /// </summary>
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel model)
-        {
-            var user = _patientService.LoginPatient(model.Email, model.Password);
-            if (user == null)
-                return Unauthorized("Invalid credentials or not a Patient.");
-            
-            return Ok($"Patient {user.Email} logged in successfully.");
-        }
 
         /// <summary>
         /// Submit medical history.
@@ -84,5 +83,100 @@ namespace Projet.API.Controllers
             var messages = _patientService.GetMessages(senderId, receiverId);
             return Ok(messages);
         }
-    }
+    
+
+     [HttpPost("appointments")]
+        public IActionResult CreateAppointment([FromBody] AppointmentViewModel model)
+        {
+            try
+            {
+                var patientId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var appointment = new Appointment
+                {
+                    DoctorId = model.DoctorId,
+                    PatientId = patientId,
+                    PatientName = model.PatientName,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details ?? string.Empty,
+                    Status = model.Status,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                appointmentManager.Add(appointment);
+                return Ok(new { message = "Appointment created successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating appointment");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+        [HttpPut("appointments/{appointmentId}")]
+        public ActionResult UpdateAppointment(int appointmentId, [FromBody] AppointmentViewModel model)
+        {
+            try
+            {
+                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var appointment = new Appointment
+                {
+                    Id = appointmentId,
+                    DoctorId = doctorId,
+                    PatientId = model.PatientId,
+                    PatientName = model.PatientName,
+                    AppointmentDate = model.AppointmentDate,
+                    Details = model.Details ?? string.Empty,
+                    Status = model.Status,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                appointmentManager.Update(appointment);
+                return Ok(new { message = "Appointment updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating appointment");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("appointments/{appointmentId}")]
+        public ActionResult DeleteAppointment(int appointmentId)
+        {
+            try
+            {
+                appointmentManager.Delete(appointmentId);
+                return Ok(new { message = "Appointment deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting appointment");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("appointments")]
+
+        public ActionResult<IEnumerable<Appointment>> GetAppointments()
+        {
+            try
+            {
+                var patientId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var appointments = appointmentManager.GetPatientAppointments(patientId);
+                return Ok(appointments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting appointments");
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+    
+
+
+
+    
+}
 }

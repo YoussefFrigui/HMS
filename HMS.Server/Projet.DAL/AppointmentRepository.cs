@@ -64,4 +64,20 @@ namespace Projet.DAL
             a.DoctorId == doctorId && 
             a.AppointmentDate.Date == now.Date);
     }
-}}
+
+    public IEnumerable<Appointment> GetByPatientId(int patientId)
+{
+    return _context.Appointments.Where(a => a.PatientId == patientId).ToList();
+}
+
+    public IEnumerable<Appointment> GetByDoctorId(int doctorId)
+    {
+        return _context.Appointments.Where(a => a.DoctorId == doctorId).ToList();
+    }
+
+    public IEnumerable<Appointment> GetPatientAppointments(int patientId)
+    {
+        return _context.Appointments.Where(a => a.PatientId == patientId).ToList();
+    }
+}   
+}

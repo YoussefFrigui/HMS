@@ -50,5 +50,10 @@ namespace Projet.DAL
         {
             return _context.Users.ToList();
         }
+
+        public IEnumerable<User> GetByRole(Enums.Role role)
+        {
+            return _context.Users.Where(u => u.Role == role).ToList();
+        }
     }
 }

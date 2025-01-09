@@ -100,5 +100,10 @@ namespace Projet.DAL
                 .Where(r => r.PatientId == patientId)
                 .ToList();
         }
+
+        public User GetDoctorById(int doctorId)
+        {
+            return _context.Users.Find(doctorId);
+        }
     }
 }

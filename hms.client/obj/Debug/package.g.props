@@ -15,11 +15,12 @@
     <PackageJsonDependenciesMuiIconsMaterial Condition="$(PackageJsonDependenciesMuiIconsMaterial) == ''">^5.14.0</PackageJsonDependenciesMuiIconsMaterial>
     <PackageJsonDependenciesMuiMaterial Condition="$(PackageJsonDependenciesMuiMaterial) == ''">^5.14.0</PackageJsonDependenciesMuiMaterial>
     <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.4.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesAxois Condition="$(PackageJsonDependenciesAxois) == ''">^0.0.1-security</PackageJsonDependenciesAxois>
     <PackageJsonDependenciesHmsFrontend Condition="$(PackageJsonDependenciesHmsFrontend) == ''">file:</PackageJsonDependenciesHmsFrontend>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^18.2.0</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^18.2.0</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReactHookForm Condition="$(PackageJsonDependenciesReactHookForm) == ''">^7.45.1</PackageJsonDependenciesReactHookForm>
-    <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">^6.14.1</PackageJsonDependenciesReactRouterDom>
+    <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">^6.28.1</PackageJsonDependenciesReactRouterDom>
     <PackageJsonDependenciesYup Condition="$(PackageJsonDependenciesYup) == ''">^1.2.0</PackageJsonDependenciesYup>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^18.2.14</PackageJsonDevdependenciesTypesReact>
     <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">^18.2.6</PackageJsonDevdependenciesTypesReactDom>

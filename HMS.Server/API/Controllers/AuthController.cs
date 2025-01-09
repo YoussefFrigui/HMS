@@ -9,6 +9,8 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Projet.Services;
+using Projet.Enums;
 
 namespace Projet.API.Controllers
 {
@@ -25,21 +27,30 @@ namespace Projet.API.Controllers
             _config = config;
         }
 
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterModel registerModel)
+          [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
+
+            var userExists = _userManager.GetUserByEmail(model.Email);
+            if (userExists != null)
+            {
+                return BadRequest(new { message = "User already exists!" });
+            }
 
             var user = new User
             {
-                Email = registerModel.Email,
-                Password = Projet.Services.PasswordHasher.HashPassword(registerModel.Password),
-                Role = registerModel.Role
+                Email = model.Email,
+                Password = PasswordHasher.HashPassword(model.Password),
+                Role = Role.Patient // Default role
             };
 
             _userManager.Add(user);
-            return Ok(new { Message = "User registered successfully" });
+
+            return Ok(new { message = "User registered successfully!" });
         }
 
         [HttpPost("login")]
@@ -71,6 +82,7 @@ private string GenerateJWTToken(User user)
     var claims = new[]
     {
         new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Role, user.Role.ToString()) // Ensure Role is a string like "Admin", "Doctor", "Patient"
     };
 

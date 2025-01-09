@@ -18,6 +18,14 @@ namespace Projet.API.Controllers
     public class DoctorController : ControllerBase
     {
         private readonly DoctorService _doctorService;
+
+        private readonly AppointmentManager appointmentManager;
+
+        private readonly LabReportManager labReportManager;
+
+        private readonly MessageManager messageManager;
+
+        private readonly MedicalHistoryManager medicalHistoryManager;
         private readonly ILogger<DoctorController> _logger;
 
         public DoctorController(DoctorService doctorService, ILogger<DoctorController> logger)
@@ -53,7 +61,7 @@ namespace Projet.API.Controllers
                     RecipientId = model.ReceiverId,
                     Content = model.Content,
                 };
-                
+
                 _doctorService.SendMessage(message);
                 return Ok(new { message = "Message sent successfully" });
             }
@@ -69,8 +77,21 @@ namespace Projet.API.Controllers
         {
             try
             {
-                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-                
+                // Get doctorId from JWT claim
+                var doctorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (doctorIdClaim == null)
+                {
+                    return BadRequest(new { message = "Doctor ID not found in token" });
+                }
+
+                // Verify doctor exists
+                var doctorId = int.Parse(doctorIdClaim.Value);
+                var doctor = _doctorService.GetDoctorById(doctorId);
+                if (doctor == null)
+                {
+                    return NotFound(new { message = "Doctor not found" });
+                }
+
                 var appointment = new Appointment
                 {
                     DoctorId = doctorId,
@@ -79,7 +100,8 @@ namespace Projet.API.Controllers
                     AppointmentDate = model.AppointmentDate,
                     Details = model.Details ?? string.Empty,
                     Status = AppointmentStatus.Scheduled,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 };
 
                 _doctorService.AddAppointment(appointment);
@@ -88,11 +110,10 @@ namespace Projet.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating appointment");
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "Error creating appointment", details = ex.Message });
             }
         }
 
-        // ...existing methods...
 
         [HttpPut("appointments/{appointmentId}")]
         public ActionResult UpdateAppointment(int appointmentId, [FromBody] AppointmentViewModel model)
@@ -137,28 +158,53 @@ namespace Projet.API.Controllers
             }
         }
 
-        [HttpPost("lab-reports")]
-        public ActionResult CreateLabReport([FromBody] LabReportViewModel model)
+        [HttpGet("appointments")]
+
+        public ActionResult<IEnumerable<Appointment>> GetAppointments()
         {
             try
             {
-                var labReport = new LabReport
-                {
-                    DoctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0"),
-                    PatientId = model.PatientId,
-                    ResultDetails = model.ResultDetails,
-                };
-
-                _doctorService.AddLabReport(labReport);
-                return Ok(new { message = "Lab report created successfully" });
+                var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var appointments = _doctorService.GetAppointmentsForDoctor(doctorId);
+                return Ok(appointments);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating lab report");
+                _logger.LogError(ex, "Error getting appointments");
                 return BadRequest(new { message = ex.Message });
             }
         }
 
+       [HttpPost("lab-reports")]
+public IActionResult CreateLabReport([FromBody] LabReportViewModel model)
+{
+    try
+    {
+        var doctorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (doctorIdClaim == null)
+        {
+            _logger.LogError("Doctor ID claim not found in token");
+            return BadRequest(new { message = "Invalid token" });
+        }
+
+        var doctorId = int.Parse(doctorIdClaim.Value);
+        var report = new LabReport
+        {
+            DoctorId = doctorId,
+            PatientId = model.PatientId,
+            ReportName = model.ReportName ?? throw new ArgumentNullException(nameof(model.ReportName)),
+            ResultDetails = model.ResultDetails ?? string.Empty
+        };
+
+        _doctorService.AddLabReport(report);
+        return Ok(new { message = "Lab report created successfully" });
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error creating lab report");
+        return BadRequest(new { message = "Error creating lab report", details = ex.Message });
+    }
+}
         [HttpGet("lab-reports/{labReportId}")]
         public ActionResult<LabReport> GetLabReport(int labReportId)
         {
@@ -176,5 +222,7 @@ namespace Projet.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+
     }
 }

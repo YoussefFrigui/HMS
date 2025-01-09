@@ -1,4 +1,4 @@
-namespace HMS.Server.API.Controllers
+/*namespace HMS.Server.API.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     
@@ -36,4 +36,4 @@ namespace HMS.Server.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = report.Id }, report);
         }
     }
-}
+}*/

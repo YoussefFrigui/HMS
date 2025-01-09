@@ -25,5 +25,9 @@ namespace Projet.DAL.Contracts
         void AddLabReport(LabReport report);
         LabReport GetLabReportById(int labReportId);
         IEnumerable<LabReport> GetLabReportsForPatient(int patientId);
+
+        //get doctorbyid
+
+         User GetDoctorById(int doctorId);
     }
 }

@@ -67,5 +67,11 @@ namespace Projet.Services
         {
             return _doctorRepository.GetLabReportsForPatient(patientId);
         }
+
+        //getdocotr by id
+        public User GetDoctorById(int doctorId)
+        {
+            return _doctorRepository.GetDoctorById(doctorId);
+        }
     }
 }

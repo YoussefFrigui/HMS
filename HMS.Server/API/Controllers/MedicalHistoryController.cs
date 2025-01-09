@@ -1,4 +1,4 @@
-namespace HMS.Server.API.Controllers
+/*namespace HMS.Server.API.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
@@ -49,4 +49,4 @@ namespace HMS.Server.API.Controllers
             return NoContent();
         }
     }
-}
+}*/

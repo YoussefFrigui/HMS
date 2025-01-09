@@ -62,6 +62,13 @@ namespace Projet.BLL
             return appointment;
         }
 
+        public IEnumerable<Appointment> GetByPatientId(int patientId)
+{
+    return _repository.GetByPatientId(patientId);
+}
+
+
+
         public IEnumerable<Appointment> GetDoctorAppointments(int doctorId)
         {
             if (doctorId <= 0)
@@ -83,6 +90,17 @@ namespace Projet.BLL
         {
             var appointment = GetById(id);
             _repository.Delete(id);
+        }
+        //GetByDoctorId
+
+        public IEnumerable<Appointment> GetByDoctorId(int doctorId)
+        {
+            return _repository.GetByDoctorId(doctorId);
+        }
+
+        public IEnumerable<Appointment> GetPatientAppointments(int patientId)
+        {
+            return _repository.GetPatientAppointments(patientId);
         }
     }
 }
