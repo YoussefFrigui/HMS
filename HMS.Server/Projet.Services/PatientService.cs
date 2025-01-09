@@ -1,3 +1,4 @@
+using Projet.BLL;
 using Projet.DAL.Contracts;
 using Projet.Entities;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ namespace Projet.Services
     public class PatientService
     {
         private readonly IPatientRepository _patientRepository;
+
+        private readonly AppointmentManager appointmentManager;
 
         public PatientService(IPatientRepository patientRepository)
         {
@@ -40,5 +43,13 @@ namespace Projet.Services
         {
             return _patientRepository.GetMessagesBetweenUsers(senderId, receiverId);
         }
+
+          public void CreateAppointment(Appointment appointment)
+    {
+        
+            appointmentManager.Add(appointment);
+        
+        
     }
+}
 }

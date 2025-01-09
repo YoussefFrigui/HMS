@@ -187,10 +187,10 @@ public IActionResult CreateLabReport([FromBody] LabReportViewModel model)
             return BadRequest(new { message = "Invalid token" });
         }
 
-        var doctorId = int.Parse(doctorIdClaim.Value);
+        var doctorIdparsed = int.Parse(doctorIdClaim.Value);
         var report = new LabReport
         {
-            DoctorId = doctorId,
+            DoctorId = doctorIdparsed,
             PatientId = model.PatientId,
             ReportName = model.ReportName ?? throw new ArgumentNullException(nameof(model.ReportName)),
             ResultDetails = model.ResultDetails ?? string.Empty

@@ -54,6 +54,11 @@ namespace HMS.Server
 
     // Register Managers
     services.AddScoped<IUserManager, UserManager>();
+    services.AddScoped<IAppointmentManager, AppointmentManager>();
+    services.AddScoped<ILabReportManager, LabReportManager>();
+    services.AddScoped<IMedicalHistoryManager, MedicalHistoryManager>();
+    services.AddScoped<IMessageManager, MessageManager>();
+
 
     services.AddControllers();
     

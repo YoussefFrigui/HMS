@@ -51,5 +51,27 @@ namespace Projet.DAL
                 .OrderBy(m => m.Id)
                 .ToList();
         }
+
+        public void AddAppointment(Appointment appointment)
+        {
+            _context.Appointments.Add(appointment);
+            _context.SaveChanges();
+        }
+
+        public void UpdateAppointment(Appointment appointment)
+        {
+            _context.Appointments.Update(appointment);
+            _context.SaveChanges();
+        }
+
+        public void DeleteAppointment(int appointmentId)
+        {
+            var appointment = _context.Appointments.Find(appointmentId);
+            if (appointment != null)
+            {
+                _context.Appointments.Remove(appointment);
+                _context.SaveChanges();
+            }
+        }
     }
 }
