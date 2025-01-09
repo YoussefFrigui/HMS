@@ -9,17 +9,22 @@
     <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">vite preview</PackageJsonScriptsPreview>
     <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint . --ext .js,.jsx,.ts,.tsx</PackageJsonScriptsLint>
     <PackageJsonScriptsFormat Condition="$(PackageJsonScriptsFormat) == ''">prettier --write .</PackageJsonScriptsFormat>
-    <PackageJsonDependenciesEmotionReact Condition="$(PackageJsonDependenciesEmotionReact) == ''">^11.11.1</PackageJsonDependenciesEmotionReact>
-    <PackageJsonDependenciesEmotionStyled Condition="$(PackageJsonDependenciesEmotionStyled) == ''">^11.11.0</PackageJsonDependenciesEmotionStyled>
+    <PackageJsonDependenciesEmotionReact Condition="$(PackageJsonDependenciesEmotionReact) == ''">^11.14.0</PackageJsonDependenciesEmotionReact>
+    <PackageJsonDependenciesEmotionStyled Condition="$(PackageJsonDependenciesEmotionStyled) == ''">^11.14.0</PackageJsonDependenciesEmotionStyled>
     <PackageJsonDependenciesHookformResolvers Condition="$(PackageJsonDependenciesHookformResolvers) == ''">^3.1.0</PackageJsonDependenciesHookformResolvers>
     <PackageJsonDependenciesMuiIconsMaterial Condition="$(PackageJsonDependenciesMuiIconsMaterial) == ''">^5.14.0</PackageJsonDependenciesMuiIconsMaterial>
-    <PackageJsonDependenciesMuiMaterial Condition="$(PackageJsonDependenciesMuiMaterial) == ''">^5.14.0</PackageJsonDependenciesMuiMaterial>
-    <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.4.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesMuiMaterial Condition="$(PackageJsonDependenciesMuiMaterial) == ''">^5.16.14</PackageJsonDependenciesMuiMaterial>
+    <PackageJsonDependenciesReduxjsToolkit Condition="$(PackageJsonDependenciesReduxjsToolkit) == ''">^2.5.0</PackageJsonDependenciesReduxjsToolkit>
+    <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.7.9</PackageJsonDependenciesAxios>
     <PackageJsonDependenciesAxois Condition="$(PackageJsonDependenciesAxois) == ''">^0.0.1-security</PackageJsonDependenciesAxois>
     <PackageJsonDependenciesHmsFrontend Condition="$(PackageJsonDependenciesHmsFrontend) == ''">file:</PackageJsonDependenciesHmsFrontend>
+    <PackageJsonDependenciesMoment Condition="$(PackageJsonDependenciesMoment) == ''">^2.30.1</PackageJsonDependenciesMoment>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^18.2.0</PackageJsonDependenciesReact>
+    <PackageJsonDependenciesReactBigCalendar Condition="$(PackageJsonDependenciesReactBigCalendar) == ''">^1.17.1</PackageJsonDependenciesReactBigCalendar>
+    <PackageJsonDependenciesReactCalendar Condition="$(PackageJsonDependenciesReactCalendar) == ''">^5.1.0</PackageJsonDependenciesReactCalendar>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^18.2.0</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReactHookForm Condition="$(PackageJsonDependenciesReactHookForm) == ''">^7.45.1</PackageJsonDependenciesReactHookForm>
+    <PackageJsonDependenciesReactRedux Condition="$(PackageJsonDependenciesReactRedux) == ''">^9.2.0</PackageJsonDependenciesReactRedux>
     <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">^6.28.1</PackageJsonDependenciesReactRouterDom>
     <PackageJsonDependenciesYup Condition="$(PackageJsonDependenciesYup) == ''">^1.2.0</PackageJsonDependenciesYup>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^18.2.14</PackageJsonDevdependenciesTypesReact>

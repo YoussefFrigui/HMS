@@ -16,6 +16,7 @@ using Projet.Middleware;
 using Projet.BLL.Contract;
 using Projet.BLL;
 using System.Security.Claims;
+using Microsoft.VisualBasic;
 
 namespace HMS.Server
 {
@@ -140,6 +141,8 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     app.UseRouting();
 
     app.UseCors("AllowAll");
+
+    
 
     app.UseAuthentication();
     app.UseAuthorization();

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\HMS.Server.csproj": {}
+    "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\HMS.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\HMS.Server.csproj": {
+    "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\HMS.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\HMS.Server.csproj",
+        "projectUniqueName": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\HMS.Server.csproj",
         "projectName": "HMS.Server",
-        "projectPath": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\HMS.Server.csproj",
+        "projectPath": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\HMS.Server.csproj",
         "packagesPath": "C:\\Users\\yassi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\hms.server\\obj\\",
+        "outputPath": "C:\\Users\\yassi\\Documents\\DOTNET\\Hospital managment system\\hmsv1\\HMS\\HMS.Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
